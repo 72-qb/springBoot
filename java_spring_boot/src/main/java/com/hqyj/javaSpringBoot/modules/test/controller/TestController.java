@@ -46,7 +46,7 @@ public class TestController {
         LOGGER.info("This is info log");
         LOGGER.warn("This is warn log");
         LOGGER.error("This is error log");
-        return "This is a log";
+        return "This is a log24342423423";
     }
 
     /*
