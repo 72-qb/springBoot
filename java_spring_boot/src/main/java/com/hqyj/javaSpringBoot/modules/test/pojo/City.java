@@ -19,7 +19,9 @@ public class City {
     private int countryId;
     private String district;
     private int population;
+    /*json提供*/
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    /*spring提供*/
     @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date dateModified;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

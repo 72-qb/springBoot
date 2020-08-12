@@ -32,4 +32,6 @@ public interface CountryDao {
     @ResultMap(value = "countryIdResults")
     Country getCountryByCountryName(String countryName);
 
+
+
 }
