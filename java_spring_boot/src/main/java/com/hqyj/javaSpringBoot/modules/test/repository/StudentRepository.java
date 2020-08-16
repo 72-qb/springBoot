@@ -24,7 +24,8 @@ public interface StudentRepository extends JpaRepository<Student,Integer> {
 
     List<Student> findTop2ByStudentNameLike(String studentName);
 
-    @Query(nativeQuery = true, value = "select * from t_student where " +
-            "student_name = :studentName and card_id = :cardId")
-    List<Student> getStudentsByParams(@Param("studentName") String studentName, @Param("cardId") int cardId);
+    @Query(value = "select s from Student s where s.studentName=?1 and s.studentCard.cardId=?2")
+    /*@Query(nativeQuery = true, value = "select * from t_student where " +
+            "student_name = :studentName and card_id = :cardId")*/
+    List<Student> getStudentsByParams(/*@Param("studentName") */String studentName,/* @Param("cardId")*/ int cardId);
 }

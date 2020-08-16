@@ -64,8 +64,9 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    @Transactional
+    @Transactional(noRollbackFor = ArithmeticException.class)
     public Result<City> updateCity(City city) {
+        int i=1/0;
         cityDao.updateCity(city);
         return new Result<City>(Result.ResultStatus.SUCCESS.status,"update success",city);
     }

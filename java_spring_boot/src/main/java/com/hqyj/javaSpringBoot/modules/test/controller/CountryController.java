@@ -36,5 +36,12 @@ public class CountryController {
         return countryService.getCountryByCountryName(countryName);
     }
 
+    /*
+    * localhost/ctc/redis/country/522  -------get方法
+    * */
+    @GetMapping("/redis/country/{countryId}")
+    public Country mograteCountryByRedis(@PathVariable int countryId) {
+        return countryService.mograteCountryByRedis(countryId);
+    }
 
 }

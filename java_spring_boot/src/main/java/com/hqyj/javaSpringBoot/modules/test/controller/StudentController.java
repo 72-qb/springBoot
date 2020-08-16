@@ -79,7 +79,8 @@ public class StudentController {
      * localhost/sc/students3?studentName=向&cardId=1
      * */
     @GetMapping(value = "/students3")
-    public List<Student> getStudentsByParams(@RequestParam String studentName,@RequestParam int cardId){
+    public List<Student> getStudentsByParams(@RequestParam String studentName,@RequestParam(required = false,
+    defaultValue = "0") int cardId){
         return studentService.getStudentsByParams(studentName,cardId);
     }
 }

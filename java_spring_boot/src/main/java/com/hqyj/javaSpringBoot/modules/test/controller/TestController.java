@@ -1,14 +1,22 @@
 package com.hqyj.javaSpringBoot.modules.test.controller;
 
+import com.hqyj.javaSpringBoot.modules.test.pojo.City;
+import com.hqyj.javaSpringBoot.modules.test.pojo.Country;
+import com.hqyj.javaSpringBoot.modules.test.service.CityService;
+import com.hqyj.javaSpringBoot.modules.test.service.CountryService;
 import com.hqyj.javaSpringBoot.modules.test.vo.Application;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author qb
@@ -34,6 +42,10 @@ public class TestController {
 
     @Autowired
     private Application application;
+    @Autowired
+    private CountryService countryService;
+    @Autowired
+    private CityService cityService;
 
     /*
     * http://localhost:8085/test/logTest
@@ -78,4 +90,25 @@ public class TestController {
     public String test01() {
         return "hello spring-boot";
     }
+
+    @GetMapping("/index")
+    public String testThymeleaf(ModelMap map){
+        int countryId = 522;
+        List<City> cities = cityService.getCityByCountryId(countryId);
+        cities = cities.stream().limit(10).collect(Collectors.toList());
+        Country country = countryService.getCountryByCountryId(countryId);
+        map.addAttribute("thymeleafTitle","我来替换内容");
+        map.addAttribute("checked", true);
+        map.addAttribute("currentNumber", 99);
+        map.addAttribute("changeType", "checkbox");
+        map.addAttribute("baiduUrl", "/test/log");
+        map.addAttribute("city", cities.get(0));
+        map.addAttribute("shopLogo",
+                "/img/1111.png");
+        map.addAttribute("country", country);
+        map.addAttribute("cities", cities);
+        map.addAttribute("template","/test/index");
+        return "index";
+    }
+
 }
