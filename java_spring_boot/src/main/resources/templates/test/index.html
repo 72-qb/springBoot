@@ -21,3 +21,42 @@ checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"
 <a th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}" th:text="${city.cityName}"></a>
 <img th:src="@{${shopLogo}}"/>
 <p>==================================================================</p>
+
+<h3>th:object</h3>
+<div th:object="${country}">
+    <p th:text="*{countryId}">countryId</p>
+    <p th:text="${country.countryName}">countryName</p>
+    <p th:text="*{countryCode}">countryCode</p>
+</div>
+<p>========================================================</p>
+
+
+<h3>each</h3>
+<table>
+    <th>cityId</th>
+    <th>cityName</th>
+    <th>countryId</th>
+    <tr th:each="city:${cities}">
+        <td th:text="${city.cityId}"></td>
+        <td th:text="${city.cityName}"></td>
+        <td th:text="${city.countryId}"></td>
+    </tr>
+</table>
+<select>
+    <option th:each="city,cityStatus:${cities}"
+            th:value="${city.cityId}"
+            th:text="${city.cityName}">
+    </option>
+</select>
+<p>=========================================</p>
+
+<h3>form表单,th:action,th:object,th:field</h3>
+<form th:action="${updateCityUrl}" method="post" th:object="${city}">
+    <input type="hidden" value="PUT" name="_method">
+    CityId:<input th:field="*{cityId}">
+    CityName:<input th:field="*{cityName}">
+    localCityName:<input th:field="*{localCityName}">
+    <button type="submit">Submit Info</button>
+</form>
+
+

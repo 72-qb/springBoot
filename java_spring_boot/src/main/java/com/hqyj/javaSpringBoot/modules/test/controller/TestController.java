@@ -9,12 +9,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,8 +107,19 @@ public class TestController {
                 "/img/1111.png");
         map.addAttribute("country", country);
         map.addAttribute("cities", cities);
-        map.addAttribute("template","/test/index");
+        map.addAttribute("updateCityUrl","/cc/city");
+/*        map.addAttribute("template","/test/index");*/
         return "index";
+    }
+
+    /*
+    * localhost/test/testDesc?paramKey=fuck
+    * */
+    @GetMapping("/testDesc")
+    @ResponseBody
+    public String testDesc(HttpServletRequest request, @RequestParam(value = "paramKey") String paramValue){
+        String paramValue2=request.getParameter("paramKey");
+        return "This is test module desc***"+paramValue+"=="+paramValue2;
     }
 
 }

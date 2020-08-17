@@ -2,6 +2,7 @@ package com.hqyj.javaSpringBoot.modules.test.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqyj.javaSpringBoot.aspect.ServiceAnnotation;
 import com.hqyj.javaSpringBoot.modules.test.common.vo.Result;
 import com.hqyj.javaSpringBoot.modules.test.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.modules.test.dao.CityDao;
@@ -30,6 +31,7 @@ public class CityServiceImpl implements CityService {
     private CityDao cityDao;
 
     @Override
+    @ServiceAnnotation(value = "ccc")
     public List<City> getCityByCountryId(int countryId) {
        /* return cityDao.getCityByCountryId(countryId);*/
         return Optional.ofNullable(cityDao.getCityByCountryId(countryId))
@@ -66,7 +68,7 @@ public class CityServiceImpl implements CityService {
     @Override
     @Transactional(noRollbackFor = ArithmeticException.class)
     public Result<City> updateCity(City city) {
-        int i=1/0;
+        /*int i=1/0;*/
         cityDao.updateCity(city);
         return new Result<City>(Result.ResultStatus.SUCCESS.status,"update success",city);
     }
