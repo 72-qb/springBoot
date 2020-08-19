@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -114,11 +115,15 @@ public class TestController {
         map.addAttribute("baiduUrl", "/test/log");
         map.addAttribute("city", cities.get(0));
         map.addAttribute("shopLogo",
-                "/img/1111.png");
+                "/images/1111.png");
         map.addAttribute("country", country);
         map.addAttribute("cities", cities);
         map.addAttribute("updateCityUrl","/cc/city");
+        map.addAttribute("fileName","w.jpg");
 /*        map.addAttribute("template","/test/index");*/
+        File filename =new File("D:\\upload\\");
+        String[] name = filename.list();
+        map.addAttribute("fileName",name);
         return "index";
     }
 
@@ -163,6 +168,7 @@ public class TestController {
         boolean empty=true;
        try {
            for (MultipartFile file : files) {
+               System.err.println(file.getName());
                if(file.isEmpty()){
                    continue;
                }

@@ -1,4 +1,5 @@
-<h3>th:text</h3>
+<div class="right_col" role="main">
+<!--<h3>th:text</h3>
 <h1 th:text="${thymeleafTitle}">this is thymeleaf title</h1>
 <p th:text="${thymeleafTitle}">this is the thymeleaf ti-tle</p>
 <p>==================================================================</p>
@@ -16,7 +17,7 @@ checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"
 <h3>url,href</h3>
 <a th:href="@{http://www.baidu.com}" target="_blank">点我去外面的百度</a><br>
 <a th:href="${baiduUrl}" target="_blank">点我去本地</a><br>
-<!-- 封装动态url、url查询参数 -->
+&lt;!&ndash; 封装动态url、url查询参数 &ndash;&gt;
 <a th:href="@{'/test/index/'+${city.cityId}}" th:text="${city.cityName}"></a>
 <a th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}" th:text="${city.cityName}"></a>
 <img th:src="@{${shopLogo}}"/>
@@ -48,34 +49,50 @@ checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"
             th:text="${city.cityName}">
     </option>
 </select>
-<p>=========================================</p>
+<p>=========================================</p>-->
 
 <h3>form表单,th:action,th:object,th:field</h3>
 <form th:action="${updateCityUrl}" method="post" th:object="${city}">
     <input type="hidden" value="PUT" name="_method">
-    CityId:<input th:field="*{cityId}">
-    CityName:<input th:field="*{cityName}">
-    localCityName:<input th:field="*{localCityName}">
-    <button type="submit">Submit Info</button>
+    CityId:<input class="form-control-sm" th:field="*{cityId}">
+    CityName:<input class="form-control-sm" th:field="*{cityName}">
+    localCityName:<input class="form-control-sm" th:field="*{localCityName}">
+    <button class="btn btn-round btn-success" type="submit">Submit Info</button>
 </form>
 
 <h3>file upload and downlod</h3>
-<input type="text" name="fileName">
-<a href="/test/file?fileName='${fileName}'">download file</a>
+    <select class="custom-select-sm" id="fileName">
+        <option th:each="fileName:${fileName}"
+                th:text="${fileName}">
+        </option>
+    </select>
+<a href="javascript:void(0);" onclick="downloadFile()">download file</a>
 <p>==============================================</p>
 
 <p th:text="${message}"></p>
 <p>单个文件上传，使用multipart/form-data类型</p>
 <form action="/test/file" method="post" enctype="multipart/form-data">
     <input type="file" name="file">
-    <button type="submit">上传</button>
+    <button class="btn btn-primary" type="submit">上传</button>
 </form>
 <br>
 <p>多个文件上传</p>
-<form action="/test/files" method="post" enctype="multipart/form-data">
-    <input type="file" name="files">
-    <input type="file" name="files">
-    <button type="submit">上传</button>
-</form>
+    <div class="x_content">
+        <form action="/test/files" method="post" enctype="multipart/form-data" class="dropzone dz-clickable">
+            <div class="dz-default dz-message">
+            </div>
+            <br>
+            <br>
+            <button class="btn btn-primary" type="submit">上传</button>
+        </form>
+    </div>
+</div>
+<script>
+    function downloadFile() {
+        var fileName=document.getElementById("fileName").value;
+        window.location.href="/test/file?fileName="+fileName+"";
+    }
 
+
+</script>
 
