@@ -1,7 +1,7 @@
 package com.hqyj.javaSpringBoot.modules.test.service.Impl;
 
-import com.hqyj.javaSpringBoot.modules.test.common.vo.Result;
-import com.hqyj.javaSpringBoot.modules.test.common.vo.SearchVo;
+import com.hqyj.javaSpringBoot.modules.common.vo.Result;
+import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.modules.test.pojo.Student;
 import com.hqyj.javaSpringBoot.modules.test.repository.StudentRepository;
 import com.hqyj.javaSpringBoot.modules.test.service.StudentService;

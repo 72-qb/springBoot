@@ -1,10 +1,9 @@
 package com.hqyj.javaSpringBoot.modules.test.service;
 
-import com.hqyj.javaSpringBoot.modules.test.common.vo.Result;
-import com.hqyj.javaSpringBoot.modules.test.common.vo.SearchVo;
+import com.hqyj.javaSpringBoot.modules.common.vo.Result;
+import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.modules.test.pojo.Student;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 

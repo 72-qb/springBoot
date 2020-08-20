@@ -1,8 +1,8 @@
 package com.hqyj.javaSpringBoot.modules.test.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hqyj.javaSpringBoot.modules.test.common.vo.Result;
-import com.hqyj.javaSpringBoot.modules.test.common.vo.SearchVo;
+import com.hqyj.javaSpringBoot.modules.common.vo.Result;
+import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.modules.test.pojo.City;
 import com.hqyj.javaSpringBoot.modules.test.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;

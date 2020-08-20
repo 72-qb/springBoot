@@ -1,6 +1,6 @@
 package com.hqyj.javaSpringBoot.modules.test.service.Impl;
 
-import com.hqyj.javaSpringBoot.modules.test.common.vo.Result;
+import com.hqyj.javaSpringBoot.modules.common.vo.Result;
 import com.hqyj.javaSpringBoot.modules.test.pojo.Card;
 import com.hqyj.javaSpringBoot.modules.test.repository.CardRepository;
 import com.hqyj.javaSpringBoot.modules.test.service.CardService;

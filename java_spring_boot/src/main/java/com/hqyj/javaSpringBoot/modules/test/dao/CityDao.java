@@ -1,7 +1,6 @@
 package com.hqyj.javaSpringBoot.modules.test.dao;
 
-import com.github.pagehelper.PageInfo;
-import com.hqyj.javaSpringBoot.modules.test.common.vo.SearchVo;
+import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.modules.test.pojo.City;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;

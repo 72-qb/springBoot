@@ -1,4 +1,4 @@
-package com.hqyj.javaSpringBoot.modules.test.common.vo;
+package com.hqyj.javaSpringBoot.modules.common.vo;
 
 /**
  * @author qb

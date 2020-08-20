@@ -78,13 +78,13 @@ checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"
 <br>
 <p>多个文件上传</p>
     <div class="x_content">
-        <form action="/test/files" method="post" enctype="multipart/form-data" class="dropzone dz-clickable">
+        <form action="/test/files" method="post" enctype="multipart/form-data" id="form1" class="dropzone dz-clickable">
             <div class="dz-default dz-message">
             </div>
             <br>
             <br>
-            <button class="btn btn-primary" type="submit">上传</button>
         </form>
+        <button class="btn btn-primary" type="button" id="btn_upload">上传</button>
     </div>
 </div>
 <script>
@@ -92,7 +92,36 @@ checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"
         var fileName=document.getElementById("fileName").value;
         window.location.href="/test/file?fileName="+fileName+"";
     }
+    $(document).ready(function () {
+        Dropzone.options.form1 = {
 
+            //禁止自动提交上传
+            autoProcessQueue: false,
 
+            //一次最多上传文件数
+            parallelUploads: 10,
+            maxFiles: 10,
+
+            //文件最大体积
+            maxFilesize: 0.5,  //单位：MB
+
+            //限制文件类型
+            acceptedFiles: ".jpg, .jpeg, .png, .gif, .pdf",
+
+            //删除按钮
+            addRemoveLinks: true,
+
+            init: function (e) {
+                var myDropzone = this;
+                $('#btn_upload').on("click", function() {
+                    myDropzone.processQueue();
+                });
+                myDropzone.on("sending", function(files, xhr, data) {
+
+                });
+
+            }
+        };
+    });
 </script>
 
