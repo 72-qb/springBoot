@@ -2,6 +2,7 @@ package com.hqyj.javaSpringBoot.modules.account.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author qb
@@ -21,4 +22,15 @@ public class AccountController {
 
     @RequestMapping("/register")
     public String register(){return "indexSimple";}
+
+    @RequestMapping("/users")
+    public String users(){
+        return "index";
+    }
+
+    @RequestMapping("/roles")
+    public String roles(){
+        return "index";
+    }
+
 }

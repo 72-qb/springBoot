@@ -1,0 +1,279 @@
+<!-- import css-->
+<link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<!-- NProgress -->
+<link href="/plugin/nprogress/nprogress.css" rel="stylesheet">
+<!-- iCheck -->
+<link href="/plugin/iCheck/skins/flat/green.css" rel="stylesheet">
+<!-- Datatables -->
+<link href="/plugin/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+<link href="/plugin/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+<link href="/plugin/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+<link href="/plugin/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+<link href="/plugin/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- page content -->
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Users <small>Users list</small></h3>
+            </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <ul class="nav navbar-right panel_toolbox" style="margin-left:0; float: left;">
+                            <button id="addRoleBtn" type="button" class="btn btn-primary"
+                                    data-toggle="modal" data-target="#addRoleModal">Add
+                            </button>
+                            </li>
+                        </ul>
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card-box table-responsive">
+                                    <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                                        <thead>
+                                        <tr>
+                                            <th>roleId</th>
+                                            <th>roleName</th>
+                                            <th>Operation</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="account/roleAdd"></div>
+<div th:replace="account/roleUpdate"></div>
+
+
+<!-- import js-->
+<!-- FastClick -->
+<script src="/plugin/fastclick/lib/fastclick.js"></script>
+<!-- NProgress -->
+<script src="/plugin/nprogress/nprogress.js"></script>
+<!-- iCheck -->
+<script src="/plugin/iCheck/icheck.min.js"></script>
+<!-- Datatables -->
+<script src="/plugin/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/plugin/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<script src="/plugin/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/plugin/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+<script src="/plugin/datatables.net-buttons/js/buttons.flash.min.js"></script>
+<script src="/plugin/datatables.net-buttons/js/buttons.html5.min.js"></script>
+<script src="/plugin/datatables.net-buttons/js/buttons.print.min.js"></script>
+<script src="/plugin/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+<script src="/plugin/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+<script src="/plugin/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugin/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+<script src="/plugin/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+
+<script type="text/javascript">
+    var DFFAULT_PAGE_SIZE = 5;
+    $(document).ready(function () {
+        intiRoleTable(DFFAULT_PAGE_SIZE);
+
+        $("#addRoleBtn").bind("click", function () {
+            intAddModal();
+        })
+
+        $("#insertRoleBtn").bind("click", function () {
+            saveRole();
+        })
+
+        $("#UpdateUserBtn").bind("click", function () {
+            updateUser()
+        })
+    })
+
+    function intiRoleTable(pageSize) {
+        $("#datatable").DataTable({
+            'paging': true,//分页开启
+            "serverSide": true,//后端分页开启
+            "pagingType": "full_numbers",//分页样式的类型分为simple,simple_numbers/full/full_numbers
+            "pageLength": pageSize,//定义初始长度
+            "processing": true,//请求后端加载时所需时间的一个动作
+            "destory": true,//允许销毁替换，在表格重新查询时，可以自动销毁以前的data
+            'lengthChange': true,//控制是否能调整每页的记录数
+            'searching': true,//模糊查询框
+            'data-show-refresh': true,//显示刷新
+            'ordering': true,//排序
+            'autowidth': false,//自动设置每一列的宽度
+            'ajax': function (data, callback, settings) {
+                var columIndex = data.order[0].column;
+                var sort = data.order[0].dir;
+                var orderBy = data.columns[columIndex].name;
+                pageSize = data.length == undefined ? pageSize : data.length;
+                var searchVo = {};
+                searchVo.currentPage = (data.start / pageSize) + 1;
+                searchVo.pageSize = pageSize;
+                searchVo.keyWord = data.search.value;
+                searchVo.orderBy = orderBy;
+                searchVo.sort = sort;
+
+                $.ajax({
+                    url: "/role/roles",
+                    data: JSON.stringify(searchVo),
+                    contentType: "application/json",
+                    type: "post",
+                    success: function (info) {
+                        var fData = {
+                            draw: 0,
+                            recordsTotal: 0,
+                            recordsFiltered: 0,
+                            data: []
+                        }
+                        if (!info) {
+                            layer.msg("请求出差，请稍后重试！", {icon: 2})
+                            callback(fData);
+                            return;
+                        }
+                        if (info.list == null) {
+                            $('#datatable tbody tr').remove();
+                            $('#loading').remove();
+                            callback(fData);
+                            return;
+                        }
+                        $('#loading').remove();
+                        var gearDatas = [];
+                        for (var i = 0; i < info.list.length; i++) {
+                            var rowData = new TData(info.list[i].roleId, info.list[i].roleName);
+                            gearDatas.push(rowData);
+                        }
+                        fData.data = gearDatas;
+                        fData.recordsTotal = info.total;
+                        fData.recordsFiltered = info.total;
+                        callback(fData);
+                    },
+                    error: function () {
+                        layer.msg(data.responseText, {icon: 0})
+                    }
+                })
+            },
+            "columns": [
+                {data: 'roleId', name: "role_id", sortable: true},
+                {data: 'roleName', name: "role_name", sortable: true},
+                {data: 'operate', width: '80px', sortable: false}
+            ]
+        })
+    }
+
+    //行数据结构
+    function TData(roleId, roleName) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.operate = function () {
+            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#updateRoleModal'" +
+                "onclick='initUpdateModal(\"" + roleId + "\")'>编辑</a>&nbsp;" +
+                "<a href='javascript:void(0);' onclick='deleteRole(\"" + roleId + "\")' class='btn_editcolor'>删除</a>";
+        }
+
+    }
+
+    function intAddModal() {
+        $("#roleNameForAddPage").val("");
+    }
+
+    function saveRole() {
+        var roleName = $("#roleNameForAddPage").val()
+        var params = {
+            "roleName": roleName
+        }
+        $.ajax({
+            url: "/role/role",
+            type: "post",
+            data: JSON.stringify(params),
+            contentType: "application/json",
+            success: function (info) {
+                if (info.status == 200) {
+                    layer.alert(info.message, {icon: 1});
+                    $("#datatable").dataTable().fnDestroy();
+                    intiRoleTable(DFFAULT_PAGE_SIZE);
+                } else {
+                    layer.alert(info.message, {icon: 0});
+                }
+            }
+        })
+
+    }
+
+    function initUpdateModal(roleId) {
+        $.ajax({
+            url: "/role/role/" + roleId,
+            type: "get",
+            success: function (info) {
+                $("#roleIdForUpdatePage").val(info.roleId);
+                $("#roleNameForUpdatePage").val(info.roleName);
+            },
+            error: function (info) {
+            }
+        })
+
+    }
+
+    function updateUser() {
+        var userId = $("#userIdForUpdatePage").val();
+        var userName = $("#userNameForUpdatePage").val();
+        var userImg = $("#userImgForUpdatePage").attr('src');
+        var roles = [];
+        $.each($("input[name='roleElementForUpdate']"), function () {
+            if (this.checked) {
+                var role = {};
+                role.roleId = $(this).val();
+                roles.push(role);
+            }
+        })
+        var params = {
+            "userId": userId,
+            "userName": userName,
+            "userImg": userImg,
+            "roles": roles
+        }
+        $.ajax({
+            url: "/user/user",
+            data: JSON.stringify(params),
+            type: "put",
+            contentType: "application/json",
+            success: function (info) {
+                layer.msg(info.message)
+            }
+        })
+
+    }
+
+    function deleteRole(roleId) {
+        bootbox.confirm("Are you sure?", function (result) {
+            if (result) {
+                $.ajax({
+                    url: "/role/role/" + roleId,
+                    type: "delete",
+                    success: function (info) {
+                        layer.msg(info.message, {icon: 1});
+                        $("#datatable").dataTable().fnDestroy();
+                        intiRoleTable(DFFAULT_PAGE_SIZE);
+                    }
+
+                })
+            }
+        })
+
+    }
+
+</script>

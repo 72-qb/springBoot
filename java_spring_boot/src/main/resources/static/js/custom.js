@@ -5036,4 +5036,22 @@ $(document).ready(function () {
     init_autosize();
     init_autocomplete();
 
-});	
+});
+
+/*====================角色=============================*/
+function initRoles(rolesDivId,roleElementName) {
+    $.ajax({
+        url:"/role/roles",
+        type: "get",
+        success:function (info) {
+            var rolesDiv=$("#"+rolesDivId);
+            rolesDiv.empty();
+            $.each(info,function (i,item) {
+                rolesDiv.append(
+                    "<input style='vertical-align:middle;' type='checkbox' name='"+roleElementName+"' value='"+item.roleId+"'/>"+item.roleName+"  ")
+            })
+
+        }
+    })
+
+}

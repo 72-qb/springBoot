@@ -929,7 +929,15 @@
   margin-top: 20px;
   border: 1px solid rgba(52, 73, 94, 0.44);
   padding: 4px; }
-
+.img-circle.profile_img1 {
+  width: 70%;
+  background: #fff;
+  margin-left: 15%;
+  z-index: 1000;
+  position: inherit;
+  margin-top: -5px;
+  border: 1px solid rgba(52, 73, 94, 0.44);
+}
 .profile_info {
   padding: 25px 10px 10px;
   width: 65%;
@@ -4968,3 +4976,8 @@ ul.notifications {
 
 .calendar-exibit .calendar-table {
   padding: 0 0 4px 0; }
+
+/*分页显示的css*/
+.pagination{
+  float: right;
+}

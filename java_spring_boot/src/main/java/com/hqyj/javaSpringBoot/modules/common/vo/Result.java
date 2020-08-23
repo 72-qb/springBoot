@@ -52,7 +52,7 @@ public class Result<T> {
     }
 
     public enum ResultStatus{
-        SUCCESS(200),FATLD(500);
+        SUCCESS(200),FATLD(500),ERROR(400);
         public int status;
 
         ResultStatus(int status) {

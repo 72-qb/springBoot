@@ -69,7 +69,12 @@
             type:"post",
             contentType:"application/json",
             success:function (info) {
-                alert(info.message);
+                if(info.status==200){
+                    location.href="/common/dashboard"
+                }
+                else if(info.status==500) {
+                    layer.msg(info.message,{icon:0})
+                }
             }
 
         })
