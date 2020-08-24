@@ -3,6 +3,7 @@ package com.hqyj.javaSpringBoot.modules.account.service.Impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hqyj.javaSpringBoot.modules.account.dao.RoleDao;
+import com.hqyj.javaSpringBoot.modules.account.dao.UserRoleDao;
 import com.hqyj.javaSpringBoot.modules.account.pojo.Role;
 import com.hqyj.javaSpringBoot.modules.account.service.RoleService;
 import com.hqyj.javaSpringBoot.modules.common.vo.Result;
@@ -27,6 +28,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleDao roleDao;
+    @Autowired
+    private UserRoleDao userRoleDao;
 
     @Override
     public List<Role> getRoles() {
@@ -47,14 +50,14 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public Result<Role> insertRole(Role role) {
         if (role.getRoleName().isEmpty()){
-            return new Result<>(Result.ResultStatus.FATLD.status,"Please input roleName");
+            return new Result<Role>(Result.ResultStatus.FATLD.status,"Please input roleName");
         }
         Role roleTemp=roleDao.getRoleByRoleName(role.getRoleName());
         if(roleTemp!=null){
-            return new Result<>(Result.ResultStatus.FATLD.status,"roleName is repeat");
+            return new Result<Role>(Result.ResultStatus.FATLD.status,"roleName is repeat");
         }
         roleDao.insertRole(role);
-        return new Result<>(Result.ResultStatus.SUCCESS.status,"insert success");
+        return new Result<Role>(Result.ResultStatus.SUCCESS.status,"insert success");
     }
 
     @Override
@@ -65,6 +68,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public Result<Role> deleteRoleByRoleId(int roleId) {
+        userRoleDao.deleteUserRoleByRoleId(roleId);
         roleDao.deleteRoleByRoleId(roleId);
         return new Result<Role>(Result.ResultStatus.SUCCESS.status,"delete success");
     }

@@ -33,4 +33,14 @@ public class AccountController {
         return "index";
     }
 
+    @RequestMapping("/resources")
+    public String resources(){
+        return "index";
+    }
+
+    @RequestMapping("/profile")
+    public String profile(){
+        return "index";
+    }
+
 }

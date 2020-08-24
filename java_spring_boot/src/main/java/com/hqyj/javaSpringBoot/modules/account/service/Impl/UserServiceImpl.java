@@ -2,6 +2,7 @@ package com.hqyj.javaSpringBoot.modules.account.service.Impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hqyj.javaSpringBoot.config.ResourceConfigBean;
 import com.hqyj.javaSpringBoot.modules.account.dao.UserDao;
 import com.hqyj.javaSpringBoot.modules.account.dao.UserRoleDao;
 import com.hqyj.javaSpringBoot.modules.account.pojo.Role;
@@ -14,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import sun.security.provider.MD5;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
@@ -36,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
     @Autowired
     private UserRoleDao userRoleDao;
+    @Autowired
+    private ResourceConfigBean resourceConfigBean;
 
     @Override
     @Transactional
@@ -106,5 +112,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserId(int userId) {
         return userDao.getUserByUserId(userId);
+    }
+
+    @Override
+    public Result<String> uploadUserImg(MultipartFile file) {
+        if(file.isEmpty()){
+         return new Result<String>(Result.ResultStatus.FATLD.status,"Please select Img");
+        }
+        String relativePath="";
+        String filePath="";
+        try {
+            String osName=System.getProperty("os.name");
+            if(osName.toLowerCase().startsWith("win")){
+                filePath=resourceConfigBean.getLocationPathForWindows()+file.getOriginalFilename();
+            }else {
+                filePath=resourceConfigBean.getLocationPathForLinux()+file.getOriginalFilename();
+            }
+            relativePath=resourceConfigBean.getRelativePath()+file.getOriginalFilename();
+            File destFile=new File(filePath);
+            file.transferTo(destFile);
+        }catch (IOException ie){
+            ie.printStackTrace();
+            return new Result<String>(Result.ResultStatus.FATLD.status,"Upload success failed");
+        }
+
+        return new Result<String>(Result.ResultStatus.SUCCESS.status,"Upload success",relativePath);
     }
 }

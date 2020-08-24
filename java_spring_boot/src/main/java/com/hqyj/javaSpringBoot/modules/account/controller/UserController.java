@@ -8,8 +8,12 @@ import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.Console;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * @author qb
@@ -19,7 +23,7 @@ import java.io.Console;
  * @date 2020/8/20 14:03
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
@@ -53,5 +57,10 @@ public class UserController {
     @GetMapping(value = "/user/{userId}")
     public User getUserByUserId(@PathVariable int userId){
       return   userService.getUserByUserId(userId);
+    }
+
+    @PostMapping(value = "/userImg",consumes = "multipart/form-data")
+    public Result<String> uploadFile(@RequestParam MultipartFile file){
+        return userService.uploadUserImg(file);
     }
 }

@@ -20,7 +20,7 @@ import java.util.List;
  * @date 2020/8/22 17:13
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/api")
 public class RoleController {
 
     @Autowired

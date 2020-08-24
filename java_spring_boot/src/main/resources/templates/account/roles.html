@@ -129,7 +129,7 @@
                 searchVo.sort = sort;
 
                 $.ajax({
-                    url: "/role/roles",
+                    url: "/api/roles",
                     data: JSON.stringify(searchVo),
                     contentType: "application/json",
                     type: "post",
@@ -197,7 +197,7 @@
             "roleName": roleName
         }
         $.ajax({
-            url: "/role/role",
+            url: "/api/role",
             type: "post",
             data: JSON.stringify(params),
             contentType: "application/json",
@@ -216,7 +216,7 @@
 
     function initUpdateModal(roleId) {
         $.ajax({
-            url: "/role/role/" + roleId,
+            url: "/api/role/" + roleId,
             type: "get",
             success: function (info) {
                 $("#roleIdForUpdatePage").val(info.roleId);
@@ -247,12 +247,19 @@
             "roles": roles
         }
         $.ajax({
-            url: "/user/user",
+            url: "/api/user",
             data: JSON.stringify(params),
             type: "put",
             contentType: "application/json",
             success: function (info) {
-                layer.msg(info.message)
+                if (info.status==200){
+                    layer.msg(info.message,{icon:1})
+                    $("#datatable").dataTable().fnDestroy();
+                    intiRoleTable(DFFAULT_PAGE_SIZE);
+                }else {
+                    layer.msg(info.message,{icon:0})
+                }
+
             }
         })
 
@@ -262,7 +269,7 @@
         bootbox.confirm("Are you sure?", function (result) {
             if (result) {
                 $.ajax({
-                    url: "/role/role/" + roleId,
+                    url: "/api/role/" + roleId,
                     type: "delete",
                     success: function (info) {
                         layer.msg(info.message, {icon: 1});
