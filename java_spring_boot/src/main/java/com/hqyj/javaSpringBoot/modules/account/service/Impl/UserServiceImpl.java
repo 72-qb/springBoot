@@ -11,15 +11,21 @@ import com.hqyj.javaSpringBoot.modules.account.service.UserService;
 import com.hqyj.javaSpringBoot.modules.common.vo.Result;
 import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.utils.MD5Util;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import sun.security.provider.MD5;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.security.Security;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
@@ -46,20 +52,20 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Result<User> registerUser(User user) {
-        if(user.getUserName().isEmpty() || user.getPassword().isEmpty()){
+        if (user.getUserName().isEmpty() || user.getPassword().isEmpty()) {
             return new Result<User>(Result.ResultStatus.FATLD.status, "Please input name or password");
         }
         User userTemp = userDao.getUserByUserName(user.getUserName());
         if (userTemp != null) {
-                return new Result<User>(Result.ResultStatus.FATLD.status, "userName is repeat");
+            return new Result<User>(Result.ResultStatus.FATLD.status, "userName is repeat");
         }
         user.setPassword(MD5Util.getMD5(user));
         user.setCreateDate(LocalDateTime.now());
         userDao.registerUser(user);
-        List<Role> roles=user.getRoles();
-        if (roles!=null && !roles.isEmpty()){
-            roles.stream().forEach(item->{
-                userRoleDao.insertUserRole(user.getUserId(),item.getRoleId());
+        List<Role> roles = user.getRoles();
+        if (roles != null && !roles.isEmpty()) {
+            roles.stream().forEach(item -> {
+                userRoleDao.insertUserRole(user.getUserId(), item.getRoleId());
             });
         }
         return new Result<User>(Result.ResultStatus.SUCCESS.status, "register success.", user);
@@ -67,11 +73,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result<User> loginUserByUserName(User user) {
-        User userTemp = userDao.getUserByUserName(user.getUserName());
-        if (userTemp != null && userTemp.getPassword().equals(MD5Util.getMD5(user))) {
-            return new Result<User>(Result.ResultStatus.SUCCESS.status, "login success", user);
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),
+                MD5Util.getMD5(user));
+        usernamePasswordToken.setRememberMe(user.getRememberMe());
+        try {
+            subject.login(usernamePasswordToken);
+            subject.checkRoles();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Result<User>(Result.ResultStatus.FATLD.status, "UserName or password error");
         }
-        return new Result<User>(Result.ResultStatus.FATLD.status, "UserName or password error");
+        return new Result<User>(Result.ResultStatus.SUCCESS.status, "login success", user);
     }
 
     @Override
@@ -86,19 +99,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Result<User> updateUser(User user) {
-        User userTemp=userDao.getUserByUserName(user.getUserName());
-        if(userTemp!=null && userTemp.getUserId()!=user.getUserId()){
-            return new Result<User>(Result.ResultStatus.FATLD.status,"userName us repeat");
+        User userTemp = userDao.getUserByUserName(user.getUserName());
+        if (userTemp != null && userTemp.getUserId() != user.getUserId()) {
+            return new Result<User>(Result.ResultStatus.FATLD.status, "userName us repeat");
         }
         userDao.updateUser(user);
-        List<Role> roles=user.getRoles();
-        if (roles!=null && !roles.isEmpty()){
+        List<Role> roles = user.getRoles();
+        if (roles != null && !roles.isEmpty()) {
             userRoleDao.deleteUserRoleByUserId(user.getUserId());
-            roles.stream().forEach(item->{
-                userRoleDao.insertUserRole(user.getUserId(),item.getRoleId());
+            roles.stream().forEach(item -> {
+                userRoleDao.insertUserRole(user.getUserId(), item.getRoleId());
             });
         }
-        return new Result<User>(Result.ResultStatus.SUCCESS.status,"update success",user);
+        return new Result<User>(Result.ResultStatus.SUCCESS.status, "update success", user);
     }
 
     @Override
@@ -106,7 +119,7 @@ public class UserServiceImpl implements UserService {
     public Result<Object> deleteUser(int userId) {
         userDao.deleteUser(userId);
         userRoleDao.deleteUserRoleByUserId(userId);
-        return new Result<>(Result.ResultStatus.SUCCESS.status,"delete success.");
+        return new Result<>(Result.ResultStatus.SUCCESS.status, "delete success.");
     }
 
     @Override
@@ -116,26 +129,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result<String> uploadUserImg(MultipartFile file) {
-        if(file.isEmpty()){
-         return new Result<String>(Result.ResultStatus.FATLD.status,"Please select Img");
+        if (file.isEmpty()) {
+            return new Result<String>(Result.ResultStatus.FATLD.status, "Please select Img");
         }
-        String relativePath="";
-        String filePath="";
+        String relativePath = "";
+        String filePath = "";
         try {
-            String osName=System.getProperty("os.name");
-            if(osName.toLowerCase().startsWith("win")){
-                filePath=resourceConfigBean.getLocationPathForWindows()+file.getOriginalFilename();
-            }else {
-                filePath=resourceConfigBean.getLocationPathForLinux()+file.getOriginalFilename();
+            String osName = System.getProperty("os.name");
+            if (osName.toLowerCase().startsWith("win")) {
+                filePath = resourceConfigBean.getLocationPathForWindows() + file.getOriginalFilename();
+            } else {
+                filePath = resourceConfigBean.getLocationPathForLinux() + file.getOriginalFilename();
             }
-            relativePath=resourceConfigBean.getRelativePath()+file.getOriginalFilename();
-            File destFile=new File(filePath);
+            relativePath = resourceConfigBean.getRelativePath() + file.getOriginalFilename();
+            File destFile = new File(filePath);
             file.transferTo(destFile);
-        }catch (IOException ie){
+        } catch (IOException ie) {
             ie.printStackTrace();
-            return new Result<String>(Result.ResultStatus.FATLD.status,"Upload success failed");
+            return new Result<String>(Result.ResultStatus.FATLD.status, "Upload success failed");
         }
 
-        return new Result<String>(Result.ResultStatus.SUCCESS.status,"Upload success",relativePath);
+        return new Result<String>(Result.ResultStatus.SUCCESS.status, "Upload success", relativePath);
+    }
+
+    @Override
+    public User getUserByUserName(String userName) {
+        return userDao.getUserByUserName(userName);
     }
 }

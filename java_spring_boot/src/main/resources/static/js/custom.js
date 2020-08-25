@@ -5041,7 +5041,7 @@ $(document).ready(function () {
 /*====================角色=============================*/
 function initRoles(rolesDivId,roleElementName) {
     $.ajax({
-        url:"/role/roles",
+        url:"/api/roles",
         type: "get",
         success:function (info) {
             var rolesDiv=$("#"+rolesDivId);

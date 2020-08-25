@@ -5,6 +5,8 @@ import com.hqyj.javaSpringBoot.modules.account.pojo.User;
 import com.hqyj.javaSpringBoot.modules.account.service.UserService;
 import com.hqyj.javaSpringBoot.modules.common.vo.Result;
 import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +52,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{userId}")
+    @RequiresPermissions(value = "/api/user")
     public Result<Object> deleteUser(@PathVariable int userId){
         return userService.deleteUser(userId);
     }

@@ -28,4 +28,6 @@ public interface UserService {
     User getUserByUserId(int userId);
 
     Result<String> uploadUserImg(MultipartFile file);
+
+    User getUserByUserName(String userName);
 }

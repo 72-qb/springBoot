@@ -55,7 +55,7 @@
             layer.msg("The input code is error.",{icon: 0})
             return;
         }*/
-        var userName=$("#userName").val();
+        var  userName=$("#userName").val();
         var password=$("#password").val();
         var rememberMe=$("input[name=rememberMe]").prop("checked");
         var params={
@@ -70,7 +70,7 @@
             contentType:"application/json",
             success:function (info) {
                 if(info.status==200){
-                    location.href="/common/dashboard"
+                    location.href="/common/dashboard";
                 }
                 else if(info.status==500) {
                     layer.msg(info.message,{icon:0})

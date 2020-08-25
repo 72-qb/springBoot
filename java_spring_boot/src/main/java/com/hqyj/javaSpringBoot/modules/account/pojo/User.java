@@ -83,7 +83,7 @@ public class User {
         this.acountName = acountName;
     }
 
-    public boolean isRememberMe() {
+    public boolean getRememberMe() {
         return rememberMe;
     }
 
