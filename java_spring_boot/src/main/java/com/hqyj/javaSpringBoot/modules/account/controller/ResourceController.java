@@ -44,4 +44,14 @@ public class ResourceController {
     public Result<Resource> updateResource(@RequestBody Resource resource){
         return resourceService.insertResource(resource);
     }
+
+    @GetMapping("/resource/{resourceId}")
+    public Resource getResourceByResourceId(@PathVariable int resourceId){
+        return resourceService.getResourceByResourceId(resourceId);
+    }
+
+    @DeleteMapping("/resource/{resourceId}")
+    public Result<Resource> deleteResourceByResourceId(@PathVariable int resourceId){
+        return resourceService.deleteResourceByResourceId(resourceId);
+    }
 }

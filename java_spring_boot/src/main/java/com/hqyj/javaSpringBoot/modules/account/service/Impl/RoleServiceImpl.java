@@ -72,4 +72,14 @@ public class RoleServiceImpl implements RoleService {
         roleDao.deleteRoleByRoleId(roleId);
         return new Result<Role>(Result.ResultStatus.SUCCESS.status,"delete success");
     }
+
+    @Override
+    public Result<Role> updateRole(Role role) {
+        Role roleTemp=roleDao.getRoleByRoleName(role.getRoleName());
+        if(roleTemp!=null&&roleTemp.getRoleId()!=role.getRoleId()){
+            return new  Result<Role>(Result.ResultStatus.FATLD.status,"用户名已存在");
+        }
+        roleDao.updateRole(role);
+        return new Result<Role>(Result.ResultStatus.SUCCESS.status,"修改成功",role);
+    }
 }

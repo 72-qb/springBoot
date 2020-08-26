@@ -50,4 +50,9 @@ public class RoleController {
     public Result<Role> deleteRoleByRoleId(@PathVariable int roleId){
         return roleService.deleteRoleByRoleId(roleId);
     }
+
+    @PutMapping(value = "/role",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Result<Role> updateRole(@RequestBody Role role){
+      return roleService.updateRole(role);
+    }
 }

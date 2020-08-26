@@ -30,4 +30,6 @@ public interface UserService {
     Result<String> uploadUserImg(MultipartFile file);
 
     User getUserByUserName(String userName);
+
+    void logout();
 }

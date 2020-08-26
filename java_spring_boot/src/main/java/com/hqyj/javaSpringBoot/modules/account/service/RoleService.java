@@ -25,4 +25,6 @@ public interface RoleService {
     Role getRolesByRoleId(int roleId);
 
     Result<Role> deleteRoleByRoleId(int roleId);
+
+    Result<Role> updateRole(Role role);
 }

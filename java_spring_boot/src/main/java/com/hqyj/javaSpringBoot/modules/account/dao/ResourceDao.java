@@ -2,6 +2,7 @@ package com.hqyj.javaSpringBoot.modules.account.dao;
 
 import com.hqyj.javaSpringBoot.modules.account.pojo.Resource;
 import com.hqyj.javaSpringBoot.modules.account.pojo.Role;
+import com.hqyj.javaSpringBoot.modules.account.pojo.User;
 import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
@@ -54,4 +55,19 @@ public interface ResourceDao {
     @Select("select * from resource resource left join role_resource roleResource on "
             + "resource.resource_id = roleResource.resource_id where roleResource.role_id = #{roleId}")
     List<Resource> getResourcesByRoleId(int roleId);
+
+    @Select("select * from resource where resource_id=#{resourceId}")
+    @Results(id = "ResourceResults",
+            value = {
+                    @Result(column = "resource_id",property = "resourceId"),
+                    @Result(column = "resource_id",property = "roles",
+                            javaType = List.class,
+                            many = @Many(select = "com.hqyj.javaSpringBoot.modules.account" +
+                                    ".dao.RoleDao.getRoleByResourceId")
+                    )
+            })
+    Resource getResourceByResourceId(int resourceId);
+
+    @Delete("delete from resource where resource_id=#{resourceId}")
+    void deleteResourceByResourceId(int resourceId);
 }

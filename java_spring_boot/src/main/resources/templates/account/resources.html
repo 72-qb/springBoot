@@ -62,7 +62,7 @@
 </div>
 
 <div th:replace="account/resourceAdd"></div>
-<!--<div th:replace="account/resourceUpdate"></div>-->
+<div th:replace="account/resourceUpdate"></div>
 
 
 <!-- import js-->
@@ -99,8 +99,8 @@
             saveRole();
         })
 
-        $("#UpdateUserBtn").bind("click", function () {
-            updateUser()
+        $("#UpdateResourceBtn").bind("click", function () {
+            updateResource()
         })
     })
 
@@ -184,7 +184,7 @@
         this.resourceName = resourceName;
         this.permission = permission;
         this.operate = function () {
-            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#updateUserModal'" +
+            return "<a href='#' class='btn_editcolor' data-toggle='modal' data-target='#updateResourceModal'" +
                 "onclick='initUpdateModal(\"" + resourceId + "\")'>编辑</a>&nbsp;" +
                 "<a href='javascript:void(0);' onclick='deleteUser(\"" + resourceId + "\")' class='btn_editcolor'>删除</a>";
         }
@@ -231,15 +231,15 @@
 
     }
 
-    function initUpdateModal(userId) {
+    function initUpdateModal(resourceId) {
         initRoles("rolesForUpdatePage", "roleElementForUpdate");
         $.ajax({
-            url: "/api/user/" + userId,
+            url: "/api/resource/" + resourceId,
             type: "get",
             success: function (info) {
-                $("#userIdForUpdatePage").val(info.userId);
-                $("#userNameForUpdatePage").val(info.userName);
-                $("#userImgForUpdatePage").attr('src', info.userImg);
+                $("#resourceIdForEditPage").val(info.resourceId);
+                $("#resourceNameForEditPage").val(info.resourceName);
+                $("#permissionForEditPage").val(info.permission);
                 $.each(info.roles, function (i, item) {
                     $("input[name='roleElementForUpdate'][value=" + item.roleId + "]").attr("checked", "checked");
                 })
@@ -250,10 +250,10 @@
 
     }
 
-    function updateUser() {
-        var userId = $("#userIdForUpdatePage").val();
-        var userName = $("#userNameForUpdatePage").val();
-        var userImg = $("#userImgForUpdatePage").attr('src');
+    function updateResource() {
+        var resourceId = $("#resourceIdForEditPage").val();
+        var resourceName = $("#resourceNameForEditPage").val();
+        var permission = $("#permissionForEditPage").val();
         var roles = [];
         $.each($("input[name='roleElementForUpdate']"), function () {
             if (this.checked) {
@@ -263,13 +263,13 @@
             }
         })
         var params={
-            "userId":userId,
-            "userName":userName,
-            "userImg":userImg,
+            "resourceId":resourceId,
+            "resourceName":resourceName,
+            "permission":permission,
             "roles":roles
         }
         $.ajax({
-            url:"/api/user",
+            url:"/api/resource",
             data:JSON.stringify(params),
             type:"put",
             contentType:"application/json",
@@ -277,7 +277,7 @@
                 if (info.status == 200) {
                     layer.msg(info.message, {icon: 1})
                     $("#datatable").dataTable().fnDestroy();
-                    intiRoleTable(DFFAULT_PAGE_SIZE);
+                    intiResourceTable(DFFAULT_PAGE_SIZE);
                 } else {
                     layer.msg(info.message, {icon: 0})
                 }
@@ -286,16 +286,16 @@
         })
 
     }
-    function deleteUser(userId) {
+    function deleteUser(resourceId) {
         bootbox.confirm("Are you sure?", function(result) {
             if (result) {
                 $.ajax({
-                    url: "/api/user/" + userId,
+                    url: "/api/resource/" + resourceId,
                     type: "delete",
                     success: function (info) {
                         layer.msg(info.message, {icon: 1});
                         $("#datatable").dataTable().fnDestroy();
-                        intiRoleTable(DFFAULT_PAGE_SIZE);
+                        intiResourceTable(DFFAULT_PAGE_SIZE);
                     }
 
                 })

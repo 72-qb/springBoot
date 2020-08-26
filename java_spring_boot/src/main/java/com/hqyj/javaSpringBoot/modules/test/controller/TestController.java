@@ -151,6 +151,7 @@ public class TestController {
             String filePath="D:\\upload\\"+file.getOriginalFilename();
             File destFile=new File(filePath);
             file.transferTo(destFile);
+            redirectAttributes.addFlashAttribute("filePath",filePath);
             redirectAttributes.addFlashAttribute("message","upload is success");
         }catch (IOException ie){
             ie.printStackTrace();

@@ -13,9 +13,9 @@ import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
 import com.hqyj.javaSpringBoot.utils.MD5Util;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,6 +84,8 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             return new Result<User>(Result.ResultStatus.FATLD.status, "UserName or password error");
         }
+        Session session=subject.getSession();
+        session.setAttribute("user",subject.getPrincipal());
         return new Result<User>(Result.ResultStatus.SUCCESS.status, "login success", user);
     }
 
@@ -155,5 +157,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUserName(String userName) {
         return userDao.getUserByUserName(userName);
+    }
+
+    @Override
+    public void logout() {
+        Subject subject=SecurityUtils.getSubject();
+        subject.logout();
+        Session session=subject.getSession();
+        session.setAttribute("user",null);
     }
 }

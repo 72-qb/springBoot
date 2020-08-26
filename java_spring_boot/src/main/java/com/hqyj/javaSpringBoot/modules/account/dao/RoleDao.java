@@ -2,10 +2,7 @@ package com.hqyj.javaSpringBoot.modules.account.dao;
 
 import com.hqyj.javaSpringBoot.modules.account.pojo.Role;
 import com.hqyj.javaSpringBoot.modules.common.vo.SearchVo;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -56,4 +53,10 @@ public interface RoleDao {
 
     @Delete("delete from role where role_id=#{roleId}")
     void deleteRoleByRoleId(int roleId);
+
+    @Update("update role set role_name=#{roleName} where role_id=#{roleId} ")
+    void updateRole(Role role);
+
+    @Select("select * from role r left join role_resource rr on r.role_id=rr.role_id where rr.resource_id=#{resourceId}")
+    List<Role> getRoleByResourceId(int ResourceId);
 }

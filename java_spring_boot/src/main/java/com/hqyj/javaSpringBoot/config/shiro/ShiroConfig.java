@@ -55,10 +55,12 @@ public class ShiroConfig {
      */
     @Bean
     public ShiroFilterFactoryBean shiroFilterFactoryBean(){
-        ShiroFilterFactoryBean shiroFilter=new ShiroFilterFactoryBean();
-        shiroFilter.setSecurityManager(securityManager());
-        shiroFilter.setLoginUrl("/account/login");
-        shiroFilter.setSuccessUrl("/account/dashboard");
+        ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
+
+        // 必须设置 SecurityManager
+        shiroFilterFactoryBean.setSecurityManager(securityManager());
+        shiroFilterFactoryBean.setLoginUrl("/account/login");
+        shiroFilterFactoryBean.setSuccessUrl("/account/dashboard");
         Map<String,String> map=new LinkedHashMap<>();
         map.put("/static/**","anon");
         map.put("/css/**","anon");
@@ -71,9 +73,10 @@ public class ShiroConfig {
 
         map.put("/common/**","user");
         map.put("/test/**","user");
+        map.put("/**","authc");
 
-        shiroFilter.setFilterChainDefinitionMap(map);
-        return shiroFilter;
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
+        return shiroFilterFactoryBean;
     }
 
     /**

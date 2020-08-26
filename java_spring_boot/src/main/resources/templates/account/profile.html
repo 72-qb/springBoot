@@ -54,21 +54,21 @@
                                     <!-- Current avatar -->
                                     <img class="img-responsive avatar-view"
                                          src="" alt="Avatar" name="userImg" id="userImgForProfile"
-                                         title="Change the avatar" style="width: 220px; height: 220px;">
+                                         title="Change the avatar"
+                                         value=""
+                                         style="width: 220px; height: 220px;">
                                 </div>
                             </div>
                             <h3 name="userNameH3"></h3>
 
                             <ul class="list-unstyled user_data">
-                                <li><i class="fa fa-map-marker user-profile-icon"></i> San
-                                    Francisco, California, USA</li>
+                                <li><i class="fa fa-map-marker user-profile-icon"></i>四川成都</li>
 
-                                <li><i class="fa fa-briefcase user-profile-icon"></i>
-                                    Software Engineer</li>
+                                <li><i class="fa fa-briefcase user-profile-icon"></i>Java工程师</li>
 
                                 <li class="m-top-xs"><i
                                         class="fa fa-external-link user-profile-icon"></i> <a
-                                        href="http://www.kimlabs.com/profile/" target="_blank">www.kimlabs.com</a>
+                                        href="http://www.kimlabs.com/profile/" target="_blank">www.lyy.com</a>
                                 </li>
                             </ul>
 
@@ -335,7 +335,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         initFileInput();
-        initProfile(86);
+        initProfile($("#profileId").val());
         $("#updateProfile").bind("click",function () {
             updateProfile();
         })
@@ -351,8 +351,8 @@
             maxFileSize: 3072,
             minImageWidth: 50,
             minImageHeight: 50,
-            maxImageWidth: 1000,
-            maxImageHeight: 1000,
+            maxImageWidth: 10000,
+            maxImageHeight: 10000,
             msgFilesTooMany: "Upload file count({n} - {m})",
             showCaption: false,
             dropZoneEnabled:false,
@@ -380,7 +380,7 @@
             success: function (info) {
                 $("#userId").val(info.userId);
                 $("#userName").val(info.userName);
-                if (info.userImg == null) {
+                if (info.userImg == '') {
                     $("#userImgForProfile").attr("src", "/images/img.jpg");
                 } else {
                     $("#userImgForProfile").attr("src", info.userImg);
@@ -393,7 +393,14 @@
     function updateProfile() {
         var userId=$("#userId").val();
         var userName=$("#userName").val();
-        var userImg=$("#userImg").val();
+        var userImg='';
+        if($("#userImg").val()==''){
+            userImg=$("#userImgForProfile").attr('src');
+        }else {
+            userImg=$("#userImg").val();
+        }
+
+
         var params={
             "userId":userId,
             "userName":userName,

@@ -9,11 +9,12 @@
         <!-- menu profile quick info -->
         <div class="profile clearfix">
             <div class="profile_pic">
-                <img src="/images/img.jpg" alt="..." class="img-circle profile_img">
+                <img name="profileImg" src="" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>${userName}</h2>
+                <input id="profileId" type="hidden" th:value="${session.user.userId}">
+                <h2 name="profileName"></h2>
             </div>
         </div>
         <!-- /menu profile quick info -->
@@ -25,15 +26,16 @@
             <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                    <li shiro:hasAnyRoles="admin,manager,staff"><a href="/common/dashboard"><i class="fa fa-home"></i> 主页 </a>
-                    <li shiro:hasAnyRoles="admin,manager,staff"><a><i class="fa fa-user"></i> 帐户信息 <span class="fa fa-chevron-down"></span></a>
+                    <li shiro:hasAnyRoles="admin,manager,staff"><a href="/common/dashboard"><i class="fa fa-home"></i> 主页 </a></li>
+                    <li><a><i class="fa fa-user"></i> 帐户信息 <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
-                            <li shiro:hasAnyRoles="admin,manager,staff"><a href="/account/users">用户信息</a></li>
+                            <li shiro:hasAnyRoles="admin,manager,staff"><a href="/account/profile">个人中心</a></li>
+                            <li shiro:hasAnyRoles="admin,manager"><a href="/account/users">用户信息</a></li>
                             <li shiro:hasAnyRoles="admin,manager"><a href="/account/roles">角色信息</a></li>
-                            <li shiro:hasAnyRoles="admin,manager" ><a href="/account/resources">资源信息</a></li>
+                            <li shiro:hasAnyRoles="admin"><a href="/account/resources">资源信息</a></li>
                         </ul>
                     </li>
-                    <li shiro:hasAnyRoles="admin,manager,staff"><a><i class="fa fa-wrench"></i>测试信息<span class="fa fa-chevron-down"></span></a>
+                    <li><a><i class="fa fa-wrench"></i>测试信息<span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             <li shiro:hasAnyRoles="admin,manager,staff"><a href="/test/index">测试模块</a></li>
                             <li shiro:hasAnyRoles="admin,manager,staff"><a>一级菜单<span class="fa fa-chevron-down"></span></a>
@@ -71,3 +73,8 @@
         <!-- /menu footer buttons -->
     </div>
 </div>
+<script>
+$(document).ready(function () {
+    getProfile($("#profileId").val());
+})
+</script>

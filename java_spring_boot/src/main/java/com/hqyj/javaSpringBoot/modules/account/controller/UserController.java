@@ -66,4 +66,5 @@ public class UserController {
     public Result<String> uploadFile(@RequestParam MultipartFile file){
         return userService.uploadUserImg(file);
     }
+
 }

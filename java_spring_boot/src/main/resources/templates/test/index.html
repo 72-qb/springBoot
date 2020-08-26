@@ -70,6 +70,7 @@ checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"
 <p>==============================================</p>
 
 <p th:text="${message}"></p>
+<p th:text="${filePath}"></p>
 <p>单个文件上传，使用multipart/form-data类型</p>
 <form action="/test/file" method="post" enctype="multipart/form-data">
     <input type="file" name="file">

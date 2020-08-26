@@ -1,4 +1,4 @@
-<div id="updateUserModal" class="modal fade bs-example-modal-lg"
+<div id="updateResourceModal" class="modal fade bs-example-modal-lg"
      tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -12,37 +12,36 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group row">
-                        <label class="control-label col-md-3">User Id</label>
+                        <label class="control-label col-md-3">Resource Id</label>
                         <div class="col-md-8">
-                            <input id="userIdForUpdatePage" name="userId" class="form-control"
-                                   type="text" readonly/>
+                            <input id="resourceIdForEditPage" name="resourceId" class="form-control"
+                                   type="text" placeholder="Enter resource id" readonly/>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">User Name</label>
+                        <label class="control-label col-md-3">Resource Name</label>
                         <div class="col-md-8">
-                            <input id="userNameForUpdatePage" name="userName" class="form-control"
-                                   type="text" readonly>
+                            <input id="resourceNameForEditPage" name="resourceName" class="form-control"
+                                   type="text" placeholder="Enter resource name">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="control-label col-md-3">User Img</label>
+                        <label class="control-label col-md-3">Permission</label>
                         <div class="col-md-8">
-                            <img style="width: 35px;height: 35px" id="userImgForUpdatePage" nam="userImg">
+                            <input id="permissionForEditPage" name="permission" class="form-control"
+                                   type="text" placeholder="Enter resource permission">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-md-3">Roles</label>
-                        <div style="margin-top: 11px" class="col-md-8" id="rolesForUpdatePage" name="roles">
-
-                        </div>
+                        <div class="col-md-8" id="rolesForUpdatePage" name="roles"></div>
                     </div>
                 </form>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button id="UpdateUserBtn" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                <button id="UpdateResourceBtn" type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
             </div>
 
         </div>

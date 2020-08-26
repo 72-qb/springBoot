@@ -25,4 +25,8 @@ public interface ResourceService {
     Result<Resource> insertResource(Resource resource);
 
     List<Resource> getResourcesByRoleId(int roleId);
+
+    Resource getResourceByResourceId(int resourceId);
+
+    Result<Resource> deleteResourceByResourceId(int resourceId);
 }

@@ -224,6 +224,7 @@
             success: function (info) {
                 if (info.status == 200) {
                     layer.alert(info.message, {icon: 1});
+                    $('#addUserModal').modal('hide');
                     $("#datatable").dataTable().fnDestroy();
                     intiUserTable(DFFAULT_PAGE_SIZE);
                 } else {
@@ -280,7 +281,7 @@
                 if (info.status == 200) {
                     layer.msg(info.message, {icon: 1})
                     $("#datatable").dataTable().fnDestroy();
-                    intiRoleTable(DFFAULT_PAGE_SIZE);
+                    intiUserTable(DFFAULT_PAGE_SIZE);
                 } else {
                     layer.msg(info.message, {icon: 0})
                 }
@@ -298,7 +299,7 @@
                     success: function (info) {
                         layer.msg(info.message, {icon: 1});
                         $("#datatable").dataTable().fnDestroy();
-                        intiRoleTable(DFFAULT_PAGE_SIZE);
+                        intiUserTable(DFFAULT_PAGE_SIZE);
                     }
 
                 })

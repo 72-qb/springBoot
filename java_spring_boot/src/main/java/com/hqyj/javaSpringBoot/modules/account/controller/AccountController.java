@@ -1,6 +1,10 @@
 package com.hqyj.javaSpringBoot.modules.account.controller;
 
+import com.hqyj.javaSpringBoot.modules.account.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -14,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/login")
     public String login(){
@@ -41,6 +48,13 @@ public class AccountController {
     @RequestMapping("/profile")
     public String profile(){
         return "index";
+    }
+
+    @GetMapping("/logout")
+    public String logout(ModelMap map){
+        userService.logout();
+        map.addAttribute("template","account/login");
+        return "indexSimple";
     }
 
 }

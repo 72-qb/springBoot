@@ -5055,3 +5055,16 @@ function initRoles(rolesDivId,roleElementName) {
     })
 
 }
+
+/*==============================*/
+function getProfile(profileId) {
+    $.ajax({
+        url:"/api/user/"+profileId,
+        type:"get",
+        success:function (info) {
+            $("[name='profileName']").html(info.userName);
+            $("[name=profileImg]").attr('src',info.userImg);
+        }
+    })
+
+}

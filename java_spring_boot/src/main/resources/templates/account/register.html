@@ -5,11 +5,11 @@
                 <h1>欢迎注册！</h1>
                 <div>
                     <input name="userName" type="text" class="form-control"
-                           placeholder="Username" required="" />
+                           placeholder="Username" required=""/>
                 </div>
                 <div>
                     <input name="password" type="password" class="form-control"
-                           placeholder="Password" required="" />
+                           placeholder="Password" required=""/>
                 </div>
                 <div>
                     <button onclick="register()" class="btn btn-sm btn-primary">Submit</button>
@@ -23,7 +23,7 @@
                     </p>
 
                     <div class="clearfix"></div>
-                    <br />
+                    <br/>
 
                     <div>
                         <h1><i class="fa fa-paw"></i> Qiao</h1>
@@ -37,22 +37,24 @@
 
 <script type="text/javascript">
     function register() {
-        var userName=$("input[name=userName]").val();
-        var password=$("input[name=password]").val();
-        var params={
-            "userName":userName,
-            "password":password
+        var userName = $("input[name=userName]").val();
+        var password = $("input[name=password]").val();
+        var params = {
+            "userName": userName,
+            "password": password,
+            "userImg":"/images/img.jpg"
         }
         $.ajax({
-            url:"/api/register",
-            data:JSON.stringify(params),
-            type:"post",
-            contentType:"application/json",
-            success:function (info) {
-                layer.msg(info.message,{icon:1});
+            url: "/api/register",
+            data: JSON.stringify(params),
+            type: "post",
+            contentType: "application/json",
+            success: function (info) {
+                layer.msg(info.message, {icon: 1});
             }
         })
 
     }
+
 
 </script>

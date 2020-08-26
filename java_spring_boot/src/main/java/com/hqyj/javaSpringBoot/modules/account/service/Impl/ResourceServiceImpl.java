@@ -70,4 +70,16 @@ public class ResourceServiceImpl implements ResourceService {
     public List<Resource> getResourcesByRoleId(int roleId) {
         return resourceDao.getResourcesByRoleId(roleId);
     }
+
+    @Override
+    public Resource getResourceByResourceId(int resourceId) {
+        return resourceDao.getResourceByResourceId(resourceId);
+    }
+
+    @Override
+    public Result<Resource> deleteResourceByResourceId(int resourceId) {
+        roleResourceDao.deletRoleResourceByResourceId(resourceId);
+        resourceDao.deleteResourceByResourceId(resourceId);
+        return new Result<Resource>(Result.ResultStatus.SUCCESS.status,"delete success.0");
+    }
 }

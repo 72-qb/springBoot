@@ -98,8 +98,8 @@
             saveRole();
         })
 
-        $("#UpdateUserBtn").bind("click", function () {
-            updateUser()
+        $("#UpdateRoleBtn").bind("click", function () {
+            updateRole()
         })
     })
 
@@ -228,26 +228,15 @@
 
     }
 
-    function updateUser() {
-        var userId = $("#userIdForUpdatePage").val();
-        var userName = $("#userNameForUpdatePage").val();
-        var userImg = $("#userImgForUpdatePage").attr('src');
-        var roles = [];
-        $.each($("input[name='roleElementForUpdate']"), function () {
-            if (this.checked) {
-                var role = {};
-                role.roleId = $(this).val();
-                roles.push(role);
-            }
-        })
+    function updateRole() {
+        var roleId=$("#roleIdForUpdatePage").val();
+        var roleName = $("#roleNameForUpdatePage").val();
         var params = {
-            "userId": userId,
-            "userName": userName,
-            "userImg": userImg,
-            "roles": roles
+            "roleId": roleId,
+            "roleName": roleName
         }
         $.ajax({
-            url: "/api/user",
+            url: "/api/role",
             data: JSON.stringify(params),
             type: "put",
             contentType: "application/json",

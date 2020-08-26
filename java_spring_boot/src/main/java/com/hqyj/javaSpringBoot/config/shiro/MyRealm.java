@@ -35,15 +35,17 @@ public class MyRealm extends AuthorizingRealm {
         SimpleAuthorizationInfo simpleAuthorizationInfo=new SimpleAuthorizationInfo();
         User user=(User)principalCollection.getPrimaryPrincipal();
         List<Role> roles=user.getRoles();
-        roles.stream().forEach(item->{
-            simpleAuthorizationInfo.addRole(item.getRoleName());
-            List<Resource> resources=resourceService.getResourcesByRoleId(item.getRoleId());
-            if (resources != null && !resources.isEmpty()) {
-                resources.stream().forEach(resource -> {
-                    simpleAuthorizationInfo.addStringPermission(resource.getPermission());
-                });
-            }
-        });
+        if(roles!=null && !roles.isEmpty()){
+            roles.stream().forEach(item->{
+                simpleAuthorizationInfo.addRole(item.getRoleName());
+                List<Resource> resources=resourceService.getResourcesByRoleId(item.getRoleId());
+                if (resources != null && !resources.isEmpty()) {
+                    resources.stream().forEach(resource -> {
+                        simpleAuthorizationInfo.addStringPermission(resource.getPermission());
+                    });
+                }
+            });
+        }
         return simpleAuthorizationInfo;
     }
 
