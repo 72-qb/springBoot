@@ -1,0 +1,128 @@
+<div class="right_col" role="main">
+<!--<h3>th:text</h3>
+<h1 th:text="${thymeleafTitle}">this is thymeleaf title</h1>
+<p th:text="${thymeleafTitle}">this is the thymeleaf ti-tle</p>
+<p>==================================================================</p>
+<h3>th:if,th:unless.</h3>
+<p th:if="${checked} == true">是真就显示我</p>
+<p th:unless="${checked} == false">如果不是假的就显示我</p>
+<p th:if="${currentNumber}">小于100将显示我</p>
+<p th:if="${thymeleafTitle} == null">我是空</p>
+<p>==================================================================</p>
+
+<h3>th:attr</h3>
+checkbox:<input type="text" th:attr="type=${changeType}" th:checked="${checked}"/>
+<p>==================================================================</p>
+
+<h3>url,href</h3>
+<a th:href="@{http://www.baidu.com}" target="_blank">点我去外面的百度</a><br>
+<a th:href="${baiduUrl}" target="_blank">点我去本地</a><br>
+&lt;!&ndash; 封装动态url、url查询参数 &ndash;&gt;
+<a th:href="@{'/test/index/'+${city.cityId}}" th:text="${city.cityName}"></a>
+<a th:href="@{/test/index(pageSize=${city.cityId},currentPage='1')}" th:text="${city.cityName}"></a>
+<img th:src="@{${shopLogo}}"/>
+<p>==================================================================</p>
+
+<h3>th:object</h3>
+<div th:object="${country}">
+    <p th:text="*{countryId}">countryId</p>
+    <p th:text="${country.countryName}">countryName</p>
+    <p th:text="*{countryCode}">countryCode</p>
+</div>
+<p>========================================================</p>
+
+
+<h3>each</h3>
+<table>
+    <th>cityId</th>
+    <th>cityName</th>
+    <th>countryId</th>
+    <tr th:each="city:${cities}">
+        <td th:text="${city.cityId}"></td>
+        <td th:text="${city.cityName}"></td>
+        <td th:text="${city.countryId}"></td>
+    </tr>
+</table>
+<select>
+    <option th:each="city,cityStatus:${cities}"
+            th:value="${city.cityId}"
+            th:text="${city.cityName}">
+    </option>
+</select>
+<p>=========================================</p>-->
+
+<h3>form表单,th:action,th:object,th:field</h3>
+<form th:action="${updateCityUrl}" method="post" th:object="${city}">
+    <input type="hidden" value="PUT" name="_method">
+    CityId:<input class="form-control-sm" th:field="*{cityId}">
+    CityName:<input class="form-control-sm" th:field="*{cityName}">
+    localCityName:<input class="form-control-sm" th:field="*{localCityName}">
+    <button class="btn btn-round btn-success" type="submit">Submit Info</button>
+</form>
+
+<h3>file upload and downlod</h3>
+    <select class="custom-select-sm" id="fileName">
+        <option th:each="fileName:${fileName}"
+                th:text="${fileName}">
+        </option>
+    </select>
+<a href="javascript:void(0);" onclick="downloadFile()">download file</a>
+<p>==============================================</p>
+
+<p th:text="${message}"></p>
+<p th:text="${filePath}"></p>
+<p>单个文件上传，使用multipart/form-data类型</p>
+<form action="/test/file" method="post" enctype="multipart/form-data">
+    <input type="file" name="file">
+    <button class="btn btn-primary" type="submit">上传</button>
+</form>
+<br>
+<p>多个文件上传</p>
+    <div class="x_content">
+        <form action="/test/files" method="post" enctype="multipart/form-data" id="form1" class="dropzone dz-clickable">
+            <div class="dz-default dz-message">
+            </div>
+            <br>
+            <br>
+        </form>
+        <button class="btn btn-primary" type="button" id="btn_upload">上传</button>
+    </div>
+</div>
+<script>
+    function downloadFile() {
+        var fileName=document.getElementById("fileName").value;
+        window.location.href="/test/file?fileName="+fileName+"";
+    }
+    $(document).ready(function () {
+        Dropzone.options.form1 = {
+
+            //禁止自动提交上传
+            autoProcessQueue: false,
+
+            //一次最多上传文件数
+            parallelUploads: 10,
+            maxFiles: 10,
+
+            //文件最大体积
+            maxFilesize: 0.5,  //单位：MB
+
+            //限制文件类型
+            acceptedFiles: ".jpg, .jpeg, .png, .gif, .pdf",
+
+            //删除按钮
+            addRemoveLinks: true,
+
+            init: function (e) {
+                var myDropzone = this;
+                $('#btn_upload').on("click", function() {
+                    myDropzone.processQueue();
+                });
+                myDropzone.on("sending", function(files, xhr, data) {
+
+                });
+
+            }
+        };
+    });
+</script>
+
