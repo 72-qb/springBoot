@@ -49,6 +49,9 @@ public interface UserDao {
     @Update("update user set user_name=#{userName},user_img=#{userImg} where user_id=#{userId}")
     void updateUser(User user);
 
+    @Update("update user set password=#{password} where user_id=#{userId}")
+    void updatePassword(User user);
+
     @Delete("delete from user where user_id=#{userId}")
     void deleteUser(int userId);
 

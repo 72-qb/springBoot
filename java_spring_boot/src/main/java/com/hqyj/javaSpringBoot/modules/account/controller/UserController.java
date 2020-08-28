@@ -67,4 +67,13 @@ public class UserController {
         return userService.uploadUserImg(file);
     }
 
+    @PostMapping(value = "/password",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Result<User> comfirmPassword(@RequestBody User user) {
+        return userService.comfirmPassword(user);
+    }
+    @PutMapping(value = "/password",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Result<User> updatePassword(@RequestBody User user) {
+        return userService.updatePassword(user);
+    }
+
 }

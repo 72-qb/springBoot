@@ -14,7 +14,6 @@ import org.springframework.util.DigestUtils;
 public class MD5Util {
 
     public static String getMD5(User user){
-
         if(StringUtils.isBlank(user.getPassword())){
             return null;
         }

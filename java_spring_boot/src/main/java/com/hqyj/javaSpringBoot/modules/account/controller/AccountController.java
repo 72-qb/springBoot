@@ -30,6 +30,9 @@ public class AccountController {
     @RequestMapping("/register")
     public String register(){return "indexSimple";}
 
+    @RequestMapping("/registerVue")
+    public String registerVue(){return "indexSimple";}
+
     @RequestMapping("/users")
     public String users(){
         return "index";

@@ -50,7 +50,14 @@
             type: "post",
             contentType: "application/json",
             success: function (info) {
-                layer.msg(info.message, {icon: 1});
+
+                if (info.status==200){
+                    layer.msg(info.message, {icon: 1});
+                    location.href="/account/login"
+                }else {
+                    layer.msg(info.message, {icon: 0});
+                }
+
             }
         })
 

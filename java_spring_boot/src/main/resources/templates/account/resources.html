@@ -221,6 +221,7 @@
             success: function (info) {
                 if (info.status == 200) {
                     layer.alert(info.message, {icon: 1});
+                    $('#addResourceModal').modal('hide');
                     $("#datatable").dataTable().fnDestroy();
                     intiResourceTable(DFFAULT_PAGE_SIZE);
                 } else {
@@ -275,7 +276,8 @@
             contentType:"application/json",
             success:function (info) {
                 if (info.status == 200) {
-                    layer.msg(info.message, {icon: 1})
+                    layer.msg(info.message, {icon: 1});
+                    $('#updateResourceModal').modal('hide');
                     $("#datatable").dataTable().fnDestroy();
                     intiResourceTable(DFFAULT_PAGE_SIZE);
                 } else {

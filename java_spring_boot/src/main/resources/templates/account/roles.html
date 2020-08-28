@@ -204,6 +204,7 @@
             success: function (info) {
                 if (info.status == 200) {
                     layer.alert(info.message, {icon: 1});
+                    $('#addRoleModal').modal('hide');
                     $("#datatable").dataTable().fnDestroy();
                     intiRoleTable(DFFAULT_PAGE_SIZE);
                 } else {
@@ -242,7 +243,8 @@
             contentType: "application/json",
             success: function (info) {
                 if (info.status==200){
-                    layer.msg(info.message,{icon:1})
+                    layer.msg(info.message,{icon:1});
+                    $('#updateRoleModal').modal('hide');
                     $("#datatable").dataTable().fnDestroy();
                     intiRoleTable(DFFAULT_PAGE_SIZE);
                 }else {

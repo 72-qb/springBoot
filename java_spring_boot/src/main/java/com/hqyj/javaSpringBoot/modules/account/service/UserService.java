@@ -32,4 +32,8 @@ public interface UserService {
     User getUserByUserName(String userName);
 
     void logout();
+
+    Result<User> comfirmPassword(User user);
+
+    Result<User> updatePassword(User user);
 }

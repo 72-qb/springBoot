@@ -280,6 +280,7 @@
             success:function (info) {
                 if (info.status == 200) {
                     layer.msg(info.message, {icon: 1})
+                    $('#updateUserModal').modal('hide');
                     $("#datatable").dataTable().fnDestroy();
                     intiUserTable(DFFAULT_PAGE_SIZE);
                 } else {
@@ -297,9 +298,14 @@
                     url: "/api/user/" + userId,
                     type: "delete",
                     success: function (info) {
-                        layer.msg(info.message, {icon: 1});
-                        $("#datatable").dataTable().fnDestroy();
-                        intiUserTable(DFFAULT_PAGE_SIZE);
+                        if(info.status==200){
+                            layer.msg(info.message, {icon: 1});
+                            $("#datatable").dataTable().fnDestroy();
+                            intiUserTable(DFFAULT_PAGE_SIZE);
+                        }else {
+                            window.location.href=info.object;
+                        }
+
                     }
 
                 })

@@ -75,8 +75,7 @@ public class UserServiceImpl implements UserService {
     public Result<User> loginUserByUserName(User user) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUserName(),
-                MD5Util.getMD5(user));
-        usernamePasswordToken.setRememberMe(user.getRememberMe());
+                MD5Util.getMD5(user),user.getRememberMe());
         try {
             subject.login(usernamePasswordToken);
             subject.checkRoles();
@@ -165,5 +164,21 @@ public class UserServiceImpl implements UserService {
         subject.logout();
         Session session=subject.getSession();
         session.setAttribute("user",null);
+    }
+
+    @Override
+    public Result<User> comfirmPassword(User user) {
+        User userTemp=userDao.getUserByUserName(user.getUserName());
+        if(userTemp.getPassword().equals(MD5Util.getMD5(user))){
+            return new Result<User>(Result.ResultStatus.SUCCESS.status,"原密码正确.");
+        }
+        return new Result<User>(Result.ResultStatus.FATLD.status,"原密码错误");
+    }
+
+    @Override
+    public Result<User> updatePassword(User user) {
+        user.setPassword(MD5Util.getMD5(user));
+        userDao.updatePassword(user);
+        return new Result<User>(Result.ResultStatus.SUCCESS.status,"修改成功.");
     }
 }

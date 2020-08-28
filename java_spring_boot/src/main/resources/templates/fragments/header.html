@@ -13,7 +13,8 @@
                         <span name="profileName"></span>
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item"  href="/account/profile">个人资料</a>
+                        <input type="hidden" id="Name" th:value="${session.user.userName}">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#updatePasswordModal" onclick="updatePassword()"  href="#">修改密码</a>
                         <a class="dropdown-item"  href="javascript:;">
                             <span class="badge bg-red pull-right">50%</span>
                             <span>设置</span>
@@ -91,9 +92,68 @@
         </nav>
     </div>
 </div>
+<div th:replace="/account/passwordUpdate"></div>
 <!-- /top navigation -->
 <script>
     $(document).ready(function () {
         getProfile($("#profileId").val());
+        $("#UpdatePasswordBtn").bind("click",function () {
+            savePassword();
+        })
     })
+    function updatePassword() {
+        $("#oldPassword").val("");
+        $("#newPassword").val("");
+        $("#confirmPassword").val("");
+    }
+    function returnLogin() {
+        window.location.href="/account/logout";
+    }
+    function savePassword() {
+        var userName=$("#Name").val();
+        var password=$("#oldPassword").val();
+        var params={
+            "userName":userName,
+            "password":password
+        }
+        $.ajax({
+            url:"/api/password",
+            data:JSON.stringify(params),
+            type:"post",
+            contentType:"application/json",
+            success:function (info) {
+                if(info.status==200){
+                    var userId=$("#profileId").val();
+                    var userName=$("#Name").val();
+                    var newPassword=$("#newPassword").val();
+                    var confirmPassword=$("#confirmPassword").val();
+                    var paramList={
+                        "userId":userId,
+                        "userName":userName,
+                        "password":confirmPassword
+                    }
+                    if(newPassword==confirmPassword){
+                        $.ajax({
+                            url:"/api/password",
+                            type: "put",
+                            data:JSON.stringify(paramList),
+                            contentType: "application/json",
+                            success:function (info) {
+                                layer.msg(info.message,{icon:1})
+                                returnLogin();
+                            }
+                        })
+                    }else {
+                        layer.msg("两次输入密码不一致！",{icon:0})
+                    }
+                }
+                else {
+                    layer.msg(info.message,{icon:0});
+                }
+            }
+
+        })
+
+    }
+
 </script>
